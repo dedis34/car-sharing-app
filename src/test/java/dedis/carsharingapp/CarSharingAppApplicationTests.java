@@ -1,4 +1,4 @@
-package dedis34.carsharingapp;
+package dedis.carsharingapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
