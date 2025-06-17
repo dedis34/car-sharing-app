@@ -6,20 +6,24 @@ import dedis.carsharingapp.dto.user.UserRegistrationResponseDto;
 import dedis.carsharingapp.model.Role;
 import dedis.carsharingapp.model.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mapper(config = MapperConfig.class)
 public interface UserMapper {
+    @Mapping(source = "roles", target = "roles")
     UserRegistrationResponseDto toDto(User user);
+
     User toModel(UserRegistrationRequestDto userRegistrationRequestDto);
 
     default Set<String> mapRolesToRoleNames(Set<Role> roles) {
         return roles.stream()
-                .map(role -> role.getName().toString())
+                .map(role -> role.getName().name())
                 .collect(Collectors.toSet());
     }
 }
+
 
 
