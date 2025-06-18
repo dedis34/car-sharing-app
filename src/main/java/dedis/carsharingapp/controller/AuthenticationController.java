@@ -1,9 +1,9 @@
 package dedis.carsharingapp.controller;
 
-import dedis.carsharingapp.dto.user.UserLoginRequestDto;
-import dedis.carsharingapp.dto.user.UserLoginResponseDto;
-import dedis.carsharingapp.dto.user.UserRegistrationRequestDto;
-import dedis.carsharingapp.dto.user.UserRegistrationResponseDto;
+import dedis.carsharingapp.dto.user.auth.UserLoginRequestDto;
+import dedis.carsharingapp.dto.user.auth.UserLoginResponseDto;
+import dedis.carsharingapp.dto.user.auth.UserRegistrationRequestDto;
+import dedis.carsharingapp.dto.user.auth.UserRegistrationResponseDto;
 import dedis.carsharingapp.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

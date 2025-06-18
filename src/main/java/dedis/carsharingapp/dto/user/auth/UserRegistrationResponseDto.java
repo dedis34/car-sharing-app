@@ -1,4 +1,4 @@
-package dedis.carsharingapp.dto.user;
+package dedis.carsharingapp.dto.user.auth;
 
 import java.util.Set;
 

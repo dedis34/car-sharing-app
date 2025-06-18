@@ -1,4 +1,4 @@
-package dedis.carsharingapp.dto.user;
+package dedis.carsharingapp.dto.user.auth;
 
 import dedis.carsharingapp.customAnnnotations.FieldMatch;
 import dedis.carsharingapp.customAnnnotations.UniqueEmail;

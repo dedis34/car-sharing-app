@@ -67,10 +67,10 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public void deleteCar(Long id) {
-        if (!carRepository.existsById(id)) {
-            throw new CarNotFoundException("Car with id " + id + " not found");
-        }
-        carRepository.deleteById(id);
+        Car car = carRepository.findById(id)
+                .orElseThrow(() -> new CarNotFoundException("Car with id: " + id + " not found"));
+        car.setDeleted(true);
+        carRepository.save(car);
     }
 
     private CarType getCarTypeOrThrow(Long id) {

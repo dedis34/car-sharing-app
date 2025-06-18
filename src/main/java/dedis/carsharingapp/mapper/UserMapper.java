@@ -1,12 +1,13 @@
 package dedis.carsharingapp.mapper;
 
 import dedis.carsharingapp.config.MapperConfig;
-import dedis.carsharingapp.dto.user.UserRegistrationRequestDto;
-import dedis.carsharingapp.dto.user.UserRegistrationResponseDto;
+import dedis.carsharingapp.dto.user.UpdateUserProfileRequestDto;
+import dedis.carsharingapp.dto.user.UserInfoResponseDto;
+import dedis.carsharingapp.dto.user.auth.UserRegistrationRequestDto;
+import dedis.carsharingapp.dto.user.auth.UserRegistrationResponseDto;
 import dedis.carsharingapp.model.Role;
 import dedis.carsharingapp.model.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -17,6 +18,11 @@ public interface UserMapper {
     UserRegistrationResponseDto toDto(User user);
 
     User toModel(UserRegistrationRequestDto userRegistrationRequestDto);
+
+    UserInfoResponseDto toUserInfoDto(User user);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void patchUserFromDto(UpdateUserProfileRequestDto dto, @MappingTarget User user);
 
     default Set<String> mapRolesToRoleNames(Set<Role> roles) {
         return roles.stream()

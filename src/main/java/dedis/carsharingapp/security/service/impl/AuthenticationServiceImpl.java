@@ -1,8 +1,8 @@
 package dedis.carsharingapp.security.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import dedis.carsharingapp.dto.user.UserLoginRequestDto;
-import dedis.carsharingapp.dto.user.UserLoginResponseDto;
+import dedis.carsharingapp.dto.user.auth.UserLoginRequestDto;
+import dedis.carsharingapp.dto.user.auth.UserLoginResponseDto;
 import dedis.carsharingapp.security.service.AuthenticationService;
 import dedis.carsharingapp.security.util.JwtUtil;
 import org.springframework.security.authentication.AuthenticationManager;
