@@ -24,7 +24,7 @@ public class UsersController {
 
     @Operation(summary = "Update user's role by id", description = "Update user's role by their id")
     @PutMapping("/{id}/role")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateUserRole(@PathVariable Long id,
                                @Valid @RequestBody UpdateUserRoleRequestDto request) {
