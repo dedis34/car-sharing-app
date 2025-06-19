@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Tag(name = "Payments", description = "Endpoints for managing Stripe payments")
@@ -29,7 +28,7 @@ public class PaymentsController {
                     + "Only accessible by the MANAGER or the user themselves."
     )
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     public List<PaymentResponseDto> getPayments(@RequestParam(name = "user_id") Long userId,
                                                 @AuthenticationPrincipal User currentUser) {
         return paymentService.getPaymentsForUser(userId, currentUser);
@@ -40,7 +39,7 @@ public class PaymentsController {
             description = "Creates a new Stripe payment session for a rental."
     )
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     @ResponseStatus(HttpStatus.CREATED)
     public PaymentResponseDto createPaymentSession(@Valid @RequestBody CreatePaymentRequestDto request,
                                                    @AuthenticationPrincipal User user) {

@@ -17,4 +17,4 @@ jobs:
           distribution: 'temurin'
 
       - name: Build and test with Maven using 'test' profile
-        run: mvn --batch-mode --update-snapshots verify -Dspring.profiles.active=test -P '!with-liquibase'
+        run: mvn --batch-mode --update-snapshots verify -Dspring.profiles.active=test -P!with-liquibase

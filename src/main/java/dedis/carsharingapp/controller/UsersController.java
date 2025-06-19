@@ -34,14 +34,14 @@ public class UsersController {
     @Operation(summary = "Get profile info", description = "Get info about logged-in "
             + "user's profile")
     @GetMapping("/me")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     public UserInfoResponseDto getMyProfile(@AuthenticationPrincipal User user) {
         return userService.getUserProfile(user.getEmail());
     }
 
     @Operation(summary = "Partially update user info", description = "Partially update user's profile info")
     @PatchMapping("/me")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void patchMyProfile(@AuthenticationPrincipal User user,
                                @Valid @RequestBody UpdateUserProfileRequestDto request) {

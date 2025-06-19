@@ -26,7 +26,7 @@ public class RentalsController {
     @Operation(summary = "Create new rental", description = "Create a new rental and "
             + "decrease car inventory by 1")
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     @ResponseStatus(HttpStatus.CREATED)
     public RentalResponseDto createRental(@AuthenticationPrincipal User user,
                                           @Valid @RequestBody CreateRentalRequestDto request) {
@@ -35,7 +35,7 @@ public class RentalsController {
 
     @Operation(summary = "Get rentals", description = "Get rentals by user and rental status")
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     public List<RentalResponseDto> getMyRentals(@AuthenticationPrincipal User user,
                                                 @RequestParam(name = "is_active", required = false)
                                                 Boolean isActive) {
@@ -44,7 +44,7 @@ public class RentalsController {
 
     @Operation(summary = "Get rental by ID", description = "Get details of a specific rental")
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     public RentalResponseDto getRentalById(@PathVariable Long id) {
         return rentalService.getRentalById(id);
     }
@@ -52,7 +52,7 @@ public class RentalsController {
     @Operation(summary = "Return car", description = "Set actual return startDate and "
             + "increase car inventory by 1")
     @PostMapping("/{id}/return")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void returnRental(@PathVariable Long id) {
         rentalService.returnRental(id);

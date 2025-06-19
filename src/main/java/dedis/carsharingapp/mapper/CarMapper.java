@@ -10,13 +10,16 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapperConfig.class)
 public interface CarMapper {
+
     @Mapping(source = "type", target = "carType")
     CarResponseDto toDto(Car car);
 
+    @Mapping(target = "type", ignore = true)
     Car toModel(CarRequestDto carRequestDto);
 
-    default String mapCarTypeToString(CarType type) {
-        return type == null ? null : type.getName().name();
+    default String map(CarType carType) {
+        return carType == null ? null : carType.getName().name();
     }
 }
+
 

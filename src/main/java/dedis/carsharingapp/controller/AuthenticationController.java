@@ -13,7 +13,7 @@ import dedis.carsharingapp.security.service.AuthenticationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "User management", description = "Endpoints for managing users")
+@Tag(name = "Authentication management", description = "Endpoints for managing authentication")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api/auth")
