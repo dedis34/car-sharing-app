@@ -11,3 +11,9 @@ databaseChangeLog:
       file: db/changelog/changes/005-insert-roles.yaml
   - include:
       file: db/changelog/changes/006-assign-roles.yaml
+  - include:
+      file: db/changelog/changes/007-create-car-type-table.yaml
+  - include:
+      file: db/changelog/changes/008-insert-car-type.yaml
+  - include:
+      file: db/changelog/changes/009-create-cars-table.yaml
