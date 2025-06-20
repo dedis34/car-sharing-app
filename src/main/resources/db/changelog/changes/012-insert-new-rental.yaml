@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 012-insert-new-rental
+      author: artur
+      changes:
+        - insert:
+            tableName: rental
+            columns:
+              - column:
+                  name: car_id
+                  valueNumeric: 1
+              - column:
+                  name: user_id
+                  valueNumeric: 1
+              - column:
+                  name: date
+                  valueDate: 2030-06-20
+              - column:
+                  name: return_date
+                  valueDate: 2030-06-25
+              - column:
+                  name: actual_return_date
+                  value: null

@@ -7,12 +7,14 @@ import dedis.carsharingapp.mapper.RentalMapper;
 import dedis.carsharingapp.model.Car;
 import dedis.carsharingapp.model.Rental;
 import dedis.carsharingapp.model.User;
+import dedis.carsharingapp.notification.NotificationService;
 import dedis.carsharingapp.repository.car.CarRepository;
 import dedis.carsharingapp.repository.rental.RentalRepository;
 import dedis.carsharingapp.service.RentalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,17 +26,17 @@ public class RentalServiceImpl implements RentalService {
     private final RentalRepository rentalRepository;
     private final CarRepository carRepository;
     private final RentalMapper rentalMapper;
+    private final NotificationService notificationService;
 
     @Override
     @Transactional
     public RentalResponseDto createRental(User user, CreateRentalRequestDto request) {
         if (request.returnDate().isBefore(request.startDate())) {
-            throw new WrongDateProvidedException("Return startDate must be after start startDate");
+            throw new WrongDateProvidedException("Return date must be after start date");
         }
 
         Car car = carRepository.findById(request.carId())
-                .orElseThrow(() -> new CarNotFoundException("Car not found with id: "
-                        + request.carId()));
+                .orElseThrow(() -> new CarNotFoundException("Car not found with id: " + request.carId()));
 
         if (car.getInventory() <= 0) {
             throw new NoAvailableCarsException("No cars available for model: " + car.getModel());
@@ -49,6 +51,18 @@ public class RentalServiceImpl implements RentalService {
         rental.setDate(request.startDate());
 
         Rental savedRental = rentalRepository.save(rental);
+
+        String message = String.format(
+                "📢 New reservation:\n👤 %s %s\n🚗 %s %s\n📅 Od: %s Do: %s",
+                user.getFirstName(),
+                user.getLastName(),
+                car.getBrand(),
+                car.getModel(),
+                rental.getDate(),
+                rental.getReturnDate()
+        );
+        notificationService.sendMessage(message);
+
         return rentalMapper.toDto(savedRental);
     }
 
@@ -78,8 +92,7 @@ public class RentalServiceImpl implements RentalService {
     @Transactional
     public void returnRental(Long rentalId) {
         Rental rental = rentalRepository.findById(rentalId)
-                .orElseThrow(() -> new RentalNotFoundException("Rental not found with id: "
-                        + rentalId));
+                .orElseThrow(() -> new RentalNotFoundException("Rental not found with id: " + rentalId));
 
         if (rental.getActualReturnDate() != null) {
             throw new RentalAlreadyEndedException("Rental has already been returned.");

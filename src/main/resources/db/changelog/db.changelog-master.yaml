@@ -17,3 +17,9 @@ databaseChangeLog:
       file: db/changelog/changes/008-insert-car-type.yaml
   - include:
       file: db/changelog/changes/009-create-cars-table.yaml
+  - include:
+      file: db/changelog/changes/010-insert-sample-car.yaml
+  - include:
+      file: db/changelog/changes/011-create-rental-table.yaml
+  - include:
+      file: db/changelog/changes/012-insert-new-rental.yaml

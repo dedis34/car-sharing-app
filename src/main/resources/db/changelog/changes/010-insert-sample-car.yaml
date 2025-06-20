@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 010-insert-sample-car
+      author: artur
+      changes:
+        - insert:
+            tableName: cars
+            columns:
+              - column:
+                  name: model
+                  value: "Civic"
+              - column:
+                  name: brand
+                  value: "Honda"
+              - column:
+                  name: inventory
+                  valueNumeric: 3
+              - column:
+                  name: daily_fee
+                  valueNumeric: 49.99
+              - column:
+                  name: car_type_id
+                  valueNumeric: 1
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
