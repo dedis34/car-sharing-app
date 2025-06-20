@@ -1,8 +1,7 @@
-package dedis.carsharingapp.service.impl;
+package dedis.carsharingapp.service.impl.paymentServiceImpl;
 
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
-import com.stripe.param.checkout.SessionCreateParams;
 import dedis.carsharingapp.dto.payment.CreatePaymentRequestDto;
 import dedis.carsharingapp.dto.payment.PaymentResponseDto;
 import dedis.carsharingapp.exceptions.*;
@@ -10,12 +9,10 @@ import dedis.carsharingapp.mapper.PaymentMapper;
 import dedis.carsharingapp.model.*;
 import dedis.carsharingapp.repository.payment.PaymentRepository;
 import dedis.carsharingapp.repository.payment.PaymentStatusRepository;
-import dedis.carsharingapp.repository.payment.PaymentTypeRepository;
 import dedis.carsharingapp.repository.rental.RentalRepository;
 import dedis.carsharingapp.repository.user.UserRepository;
 import dedis.carsharingapp.service.PaymentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
@@ -29,71 +26,32 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
     private final RentalRepository rentalRepository;
     private final PaymentStatusRepository paymentStatusRepository;
-    private final PaymentTypeRepository paymentTypeRepository;
     private final PaymentMapper paymentMapper;
     private final UserRepository userRepository;
-
-    @Value("${stripe.success-url}")
-    private String successUrl;
-
-    @Value("${stripe.cancel-url}")
-    private String cancelUrl;
+    private final PaymentFactory paymentFactory;
+    private final PaymentAmountCalculator paymentAmountCalculator;
+    private final StripeSessionCreator stripeSessionCreator;
 
     @Override
     public PaymentResponseDto createPaymentSession(CreatePaymentRequestDto dto, User user) {
         Rental rental = rentalRepository.findById(dto.rentalId())
                 .orElseThrow(() -> new RentalNotFoundException("Rental not found"));
 
-        long amountInCents = rental.getCar().getDailyFee()
-                .multiply(BigDecimal.valueOf(100)).longValue();
+        if (!rental.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException("You do not have permission to create a payment for this rental");
+        }
 
-        SessionCreateParams params = SessionCreateParams.builder()
-                .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl(successUrl + "?session_id={CHECKOUT_SESSION_ID}")
-                .setCancelUrl(cancelUrl)
-                .addLineItem(
-                        SessionCreateParams.LineItem.builder()
-                                .setQuantity(1L)
-                                .setPriceData(
-                                        SessionCreateParams.LineItem.PriceData.builder()
-                                                .setCurrency("usd")
-                                                .setUnitAmount(amountInCents)
-                                                .setProductData(
-                                                        SessionCreateParams
-                                                                .LineItem.PriceData
-                                                                .ProductData.builder()
-                                                                .setName("Rental - " + rental
-                                                                        .getCar()
-                                                                        .getModel())
-                                                                .build()
-                                                )
-                                                .build()
-                                )
-                                .build()
-                )
-                .build();
+        BigDecimal amount = paymentAmountCalculator.calculateAmount(rental, dto.paymentType());
 
         try {
-            Session session = Session.create(params);
+            Session session = stripeSessionCreator.createSession(amount,
+                    dto.paymentType().name() + " - " + rental.getCar().getModel());
 
-            Payment payment = new Payment();
-            payment.setSessionId(session.getId());
-            payment.setSessionUrl(session.getUrl());
-            payment.setRental(rental);
-            payment.setAmount(rental.getCar().getDailyFee());
-            payment.setStatus(paymentStatusRepository.findByName(PaymentStatus
-                            .StatusName.STATUS_PENDING)
-                    .orElseThrow(() -> new PaymentStatusNotFoundException
-                            ("Payment status not found")));
-            payment.setType(paymentTypeRepository.findByName(PaymentType
-                            .PaymentTypeName.TYPE_PAYMENT)
-                    .orElseThrow(() -> new PaymentTypeNotFoundException
-                            ("Payment type not found")));
+            Payment payment = paymentFactory.createPayment(session, rental, amount, dto.paymentType());
             paymentRepository.save(payment);
 
             return paymentMapper.toDto(payment);
-        }
-        catch (StripeException e) {
+        } catch (StripeException e) {
             throw new StripeSessionException("Stripe session error: " + e.getMessage());
         }
     }

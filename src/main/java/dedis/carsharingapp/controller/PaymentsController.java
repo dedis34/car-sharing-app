@@ -61,7 +61,8 @@ public class PaymentsController {
             description = "Handles the redirection after successful Stripe payment"
     )
     @GetMapping("/success")
-    public String handleStripeSuccess() {
+    public String handleStripeSuccess(@RequestParam("session_id") String sessionId) {
+        paymentService.handlePaymentSuccess(sessionId);
         return "Payment successful. Thank you for your rental!";
     }
 
