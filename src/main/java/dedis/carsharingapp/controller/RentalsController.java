@@ -3,7 +3,7 @@ package dedis.carsharingapp.controller;
 import dedis.carsharingapp.dto.rental.CreateRentalRequestDto;
 import dedis.carsharingapp.dto.rental.RentalResponseDto;
 import dedis.carsharingapp.model.User;
-import dedis.carsharingapp.service.RentalService;
+import dedis.carsharingapp.service.rentalService.RentalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

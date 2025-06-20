@@ -1,4 +1,4 @@
-package dedis.carsharingapp.service.impl;
+package dedis.carsharingapp.service.impl.rentalServiceImpl;
 
 import dedis.carsharingapp.dto.rental.CreateRentalRequestDto;
 import dedis.carsharingapp.dto.rental.RentalResponseDto;
@@ -10,7 +10,8 @@ import dedis.carsharingapp.model.User;
 import dedis.carsharingapp.notification.NotificationService;
 import dedis.carsharingapp.repository.car.CarRepository;
 import dedis.carsharingapp.repository.rental.RentalRepository;
-import dedis.carsharingapp.service.RentalService;
+import dedis.carsharingapp.service.rentalService.RentalService;
+import dedis.carsharingapp.service.rentalService.NotificationMessageBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ public class RentalServiceImpl implements RentalService {
     private final CarRepository carRepository;
     private final RentalMapper rentalMapper;
     private final NotificationService notificationService;
+    private final NotificationMessageBuilder notificationMessageBuilder;
 
     @Override
     @Transactional
@@ -52,19 +54,12 @@ public class RentalServiceImpl implements RentalService {
 
         Rental savedRental = rentalRepository.save(rental);
 
-        String message = String.format(
-                "📢 New reservation:\n👤 %s %s\n🚗 %s %s\n📅 Od: %s Do: %s",
-                user.getFirstName(),
-                user.getLastName(),
-                car.getBrand(),
-                car.getModel(),
-                rental.getDate(),
-                rental.getReturnDate()
-        );
+        String message = notificationMessageBuilder.buildNewRentalMessage(savedRental);
         notificationService.sendMessage(message);
 
         return rentalMapper.toDto(savedRental);
     }
+
 
     @Override
     public List<RentalResponseDto> getRentalsByUser(User user, Boolean isActive) {
@@ -105,5 +100,10 @@ public class RentalServiceImpl implements RentalService {
         carRepository.save(car);
 
         rentalRepository.save(rental);
+    }
+
+    @Override
+    public List<Rental> getOverdueRentals(LocalDate date) {
+        return rentalRepository.findByReturnDateLessThanEqualAndActualReturnDateIsNull(date);
     }
 }
