@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 016-insert-payment-type-values
+      author: artur
+      changes:
+        - insert:
+            tableName: payment_type_name
+            columns:
+              - column:
+                  name: name
+                  value: TYPE_PAYMENT
+        - insert:
+            tableName: payment_type_name
+            columns:
+              - column:
+                  name: name
+                  value: TYPE_FINE

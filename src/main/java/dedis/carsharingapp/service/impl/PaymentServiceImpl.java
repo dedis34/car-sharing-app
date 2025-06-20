@@ -126,4 +126,13 @@ public class PaymentServiceImpl implements PaymentService {
                 .map(paymentMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<PaymentResponseDto> getAllPayments() {
+        List<Payment> payments = paymentRepository.findAll();
+        return payments.stream()
+                .map(paymentMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 }

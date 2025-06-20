@@ -23,3 +23,13 @@ databaseChangeLog:
       file: db/changelog/changes/011-create-rental-table.yaml
   - include:
       file: db/changelog/changes/012-insert-new-rental.yaml
+  - include:
+      file: db/changelog/changes/013-create-payment_type_name-table.yaml
+  - include:
+      file: db/changelog/changes/014-create-payment_status_name.yaml
+  - include:
+      file: db/changelog/changes/015-create-payment-table.yaml
+  - include:
+      file: db/changelog/changes/016-insert-payment-type-values.yaml
+  - include:
+      file: db/changelog/changes/017-insert-payment-status-values.yaml

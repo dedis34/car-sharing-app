@@ -10,4 +10,5 @@ public interface PaymentService {
     PaymentResponseDto createPaymentSession(CreatePaymentRequestDto dto, User user);
     void handlePaymentSuccess(String sessionId);
     List<PaymentResponseDto> getPaymentsForUser(Long userId, User currentUser);
+    List<PaymentResponseDto> getAllPayments();
 }

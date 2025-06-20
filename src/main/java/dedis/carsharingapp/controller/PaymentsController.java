@@ -35,6 +35,16 @@ public class PaymentsController {
     }
 
     @Operation(
+            summary = "Get all payments",
+            description = "Retrieves all payments. Accessible only by ROLE_MANAGER."
+    )
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
+    public List<PaymentResponseDto> getAllPayments() {
+        return paymentService.getAllPayments();
+    }
+
+    @Operation(
             summary = "Create payment session",
             description = "Creates a new Stripe payment session for a rental."
     )
