@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "payment_typeName")
+@Table(name = "payment_type_name")
 public class PaymentType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
