@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-insert-car-type
+      author: artur
+      changes:
+        - insert:
+            tableName: car_type
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: name
+                  value: TYPE_SEDAN
+        - insert:
+            tableName: car_type
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 2
+              - column:
+                  name: name
+                  value: TYPE_SUV
+        - insert:
+            tableName: car_type
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 3
+              - column:
+                  name: name
+                  value: TYPE_HATCHBACK
+        - insert:
+            tableName: car_type
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 4
+              - column:
+                  name: name
+                  value: TYPE_UNIVERSAL

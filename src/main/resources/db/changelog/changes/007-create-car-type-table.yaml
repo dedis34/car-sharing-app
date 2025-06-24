@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-create-car-type-table
+      author: artur
+      changes:
+        - createTable:
+            tableName: car_type
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: car_type
+            columnNames: name
+            constraintName: uq_car_type_name

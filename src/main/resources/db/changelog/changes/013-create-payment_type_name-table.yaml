@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 013-create-payment_type_name-table
+      author: artur
+      changes:
+        - createTable:
+            tableName: payment_type_name
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
