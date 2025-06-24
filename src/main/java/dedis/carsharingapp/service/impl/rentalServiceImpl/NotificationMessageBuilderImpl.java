@@ -10,7 +10,7 @@ public class NotificationMessageBuilderImpl implements NotificationMessageBuilde
     @Override
     public String buildNewRentalMessage(Rental rental) {
         return String.format(
-                "📢 New reservation:\n👤 %s %s\n🚗 %s %s\n📅 Od: %s Do: %s",
+                "📢 New reservation:\n👤 %s %s\n🚗 %s %s\n📅 From: %s To: %s",
                 rental.getUser().getFirstName(),
                 rental.getUser().getLastName(),
                 rental.getCar().getBrand(),
