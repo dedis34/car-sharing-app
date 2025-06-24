@@ -40,8 +40,8 @@ class NotificationMessageBuilderImplTest {
         assertTrue(msg.contains("📢 New reservation:"));
         assertTrue(msg.contains("Jan Kowalski"));
         assertTrue(msg.contains("Toyota Corolla"));
-        assertTrue(msg.contains("Od: 2025-06-01"));
-        assertTrue(msg.contains("Do: 2025-06-05"));
+        assertTrue(msg.contains("From: 2025-06-01"));
+        assertTrue(msg.contains("To: 2025-06-05"));
     }
 
     @Test
