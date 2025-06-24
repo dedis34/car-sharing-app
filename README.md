@@ -82,7 +82,7 @@ The system is structured around 4 core domain models:
 http://localhost:8080/swagger-ui.html
 
 📹 YouTube Demo:  
-x
+https://youtu.be/zD64rUmE8Sc
 
 ---
 

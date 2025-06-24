@@ -51,6 +51,7 @@ public class RentalServiceImpl implements RentalService {
         rental.setUser(user);
         rental.setCar(car);
         rental.setDate(request.startDate());
+        rental.setReturnDate(request.returnDate());
 
         Rental savedRental = rentalRepository.save(rental);
 
